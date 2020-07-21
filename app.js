@@ -36,6 +36,17 @@ app.post("/items", (req, res) => {
   res.status(201).json(newItem);
 });
 
+app.put("/items/:itemId", (req, res) => {
+  const { itemId } = req.params;
+  const foundItem = items.find((item) => item.id === +itemId);
+  if (foundItem) {
+    for (const key in req.body) foundItem[key] = req.body[key];
+    res.status(204).end();
+  } else {
+    res.status(404).json({ message: "Item not found" });
+  }
+});
+
 app.listen(8000, () => {
   console.log("The application is running on localhost:8000");
 });
