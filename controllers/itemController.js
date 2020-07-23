@@ -2,37 +2,55 @@
 let items = require("../items");
 //Slug
 const slugify = require("slugify");
+//db
+const { Item } = require("../db/models");
 
-exports.itemCreate = (req, res) => {
-  const id = items[items.length - 1].id + 1;
-  const slug = slugify(req.body.name, { lower: true });
-  const newItem = { id, slug, ...req.body };
-  items.push(newItem);
-  res.status(201).json(newItem);
-};
-
-exports.itemList = (req, res) => {
-  res.json(items);
-};
-
-exports.itemUpdate = (req, res) => {
-  const { itemId } = req.params;
-  const foundItem = items.find((item) => item.id === +itemId);
-  if (foundItem) {
-    for (const key in req.body) foundItem[key] = req.body[key];
-    res.status(204).end();
-  } else {
-    res.status(404).json({ message: "Item not found" });
+exports.itemCreate = async (req, res) => {
+  try {
+    const newItem = await Item.create(req.body);
+    res.status(201).json(newItem);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-exports.itemDelete = (req, res) => {
-  const { itemsId } = req.params;
-  const foundItem = items.find((item) => item.id === +itemsId);
-  if (foundItem) {
-    items = items.filter((_items) => _items.id !== +itemsId);
-    res.status(204).end();
-  } else {
-    res.status(404).json({ message: "item not found" });
+exports.itemList = async (req, res) => {
+  try {
+    const items = await Item.findAll({
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+    });
+    res.json(items);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.itemUpdate = async (req, res) => {
+  const { itemId } = req.params;
+  try {
+    const foundItem = await Item.findByPk(itemId);
+    if (foundItem) {
+      await foundItem.update(req.body);
+      res.status(204).end();
+    } else {
+      res.status(404).json({ message: "Item not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.itemDelete = async (req, res) => {
+  const { itemId } = req.params;
+  try {
+    const foundItem = await Item.findByPk(itemId);
+    if (foundItem) {
+      await foundItem.destroy();
+      res.status(204).end();
+    } else {
+      res.status(404).json({ message: "Item not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: error.message });
   }
 };
