@@ -3,9 +3,9 @@ const SequelizeSlugify = require("sequelize-slugify");
 
 const db = require("../db");
 
-class Item extends Model {}
+class Bakery extends Model {}
 
-Item.init(
+Bakery.init(
   {
     name: {
       type: DataTypes.STRING,
@@ -15,20 +15,8 @@ Item.init(
       type: DataTypes.STRING,
       unique: true,
     },
-    description: {
-      type: DataTypes.STRING,
-      // allowNull: false,
-    },
-    price: {
-      type: DataTypes.INTEGER,
-      defaultValue: 5,
-      validate: {
-        min: 1,
-      },
-    },
     image: {
       type: DataTypes.STRING,
-      // allowNull: false,
     },
   },
   {
@@ -36,7 +24,8 @@ Item.init(
   }
 );
 
-SequelizeSlugify.slugifyModel(Item, {
+SequelizeSlugify.slugifyModel(Bakery, {
   source: ["name"],
 });
-module.exports = Item;
+
+module.exports = Bakery;
