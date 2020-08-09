@@ -36,7 +36,7 @@ exports.bakeryList = async (req, res, next) => {
         {
           model: Item,
           as: "items",
-          attributes: { exclude: ["createdAt", "updatedAt"] },
+          attributes: ["id"],
         },
       ],
     });

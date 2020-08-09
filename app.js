@@ -7,6 +7,7 @@ const path = require("path");
 // Routes
 const itemRoutes = require("./routes/items");
 const bakeryRoutes = require("./routes/bakeries");
+const userRoutes = require("./routes/users");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 // Routes
 app.use("/items", itemRoutes);
 app.use("/bakeries", bakeryRoutes);
+app.use(userRoutes);
 
 app.use("/media", express.static(path.join(__dirname, "media")));
 
@@ -31,8 +33,7 @@ app.use((err, req, res, next) => {
 
 const run = async () => {
   try {
-    await db.sync({ alter: true });
-    console.log("Connection to the database successful!");
+    await db.sync();
   } catch (error) {
     console.error("Error connecting to the database: ", error);
   }

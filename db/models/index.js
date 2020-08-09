@@ -1,5 +1,6 @@
 const Bakery = require("./Bakery");
 const Item = require("./Item");
+const User = require("./User");
 
 // one to many relationship
 Bakery.hasMany(Item, {
@@ -10,4 +11,4 @@ Bakery.hasMany(Item, {
 
 Item.belongsTo(Bakery, { as: "bakery" });
 
-module.exports = { Bakery, Item };
+module.exports = { Bakery, Item, User };
