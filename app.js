@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const db = require("./db");
 const { Item } = require("./db/models");
 const path = require("path");
+const passport = require("passport");
+const { localStrategy } = require("./middleware/passport");
+
 // Routes
 const itemRoutes = require("./routes/items");
 const bakeryRoutes = require("./routes/bakeries");
@@ -13,6 +16,9 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(passport.initialize());
+passport.use(localStrategy);
+
 // Routes
 app.use("/items", itemRoutes);
 app.use("/bakeries", bakeryRoutes);

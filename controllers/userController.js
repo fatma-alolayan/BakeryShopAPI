@@ -17,6 +17,10 @@ exports.signup = async (req, res, next) => {
   }
 };
 
+exports.signin = (req, res) => {
+  console.log("exports.signin -> req", req);
+};
+
 // exports.signin = (req, res) => {
 //   console.log("exports.signin -> req", req);
 // };
