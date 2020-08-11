@@ -6,6 +6,7 @@ const { Item } = require("./db/models");
 const path = require("path");
 const passport = require("passport");
 const { localStrategy } = require("./middleware/passport");
+const { jwtStrategy } = require("./middleware/passport");
 
 // Routes
 const itemRoutes = require("./routes/items");
@@ -16,8 +17,10 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+//Passport
 app.use(passport.initialize());
 passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 // Routes
 app.use("/items", itemRoutes);

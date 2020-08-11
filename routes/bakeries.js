@@ -1,6 +1,9 @@
 const express = require("express");
 const multer = require("multer");
 
+//Passport
+const passport = require("passport");
+
 // Data
 let items = require("./items");
 //Slug
@@ -33,7 +36,12 @@ router.param("bakeryId", async (req, res, next, bakeryId) => {
 
 router.get("/", bakeryList);
 
-router.post("/", upload.single("image"), bakeryCreate);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  bakeryCreate
+);
 
 router.put("/:bakeryId", upload.single("image"), bakeryUpdate);
 
